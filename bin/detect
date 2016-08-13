@@ -2,7 +2,7 @@
 # bin/detect <build-dir>
 
 if (test -f $1/migrate.py) then
-  echo "migrate.py"
+  echo "Alembic"
   exit 0
 else
   echo "no"

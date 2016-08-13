@@ -3,28 +3,21 @@
 # fail fast and fail hard
 set -eo pipefail
 
-BUILD_DIR=$1
-PYTHON_EXE=$BUILD_DIR/.heroku/python/bin/python
+build_dir=$1
+cache_dir=$2
+env_dir=$3
 
-# copied from Heroku python buildpack
-sub-env() {
+PYTHON_EXE=$build_dir/.heroku/python/bin/python
 
-  WHITELIST=${2:-''}
-  BLACKLIST=${3:-'^(GIT_DIR|PYTHONHOME|LD_LIBRARY_PATH|LIBRARY_PATH|PATH)$'}
+blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+if [ -d "$env_dir" ]; then
+  for e in $(ls $env_dir); do
+    echo "$e" | grep -qvE "$blacklist_regex" &&
+      export "$e=$(cat $env_dir/$e)"
+    :
+  done
+fi
 
-  (
-    if [ -d "$ENV_DIR" ]; then
-      for e in $(ls $ENV_DIR); do
-        echo "$e" | grep -E "$WHITELIST" | grep -qvE "$BLACKLIST" &&
-        export "$e=$(cat $ENV_DIR/$e)"
-        :
-      done
-    fi
-
-    $1
-
-  )
-}
 
 echo "-----> Running Alembic migration"
-sub-env $PYTHON_EXE $BUILD_DIR/migrate.py db upgrade head
+$PYTHON_EXE $build_dir/migrate.py db upgrade head
