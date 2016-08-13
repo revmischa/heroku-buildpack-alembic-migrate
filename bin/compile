@@ -2,6 +2,7 @@
 
 # fail fast and fail hard
 set -eo pipefail
+set -x
 
 build_dir=$1
 cache_dir=$2
@@ -17,7 +18,6 @@ if [ -d "$env_dir" ]; then
     :
   done
 fi
-
 
 echo "-----> Running Alembic migration"
 $PYTHON_EXE $build_dir/migrate.py db upgrade head
