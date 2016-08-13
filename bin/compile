@@ -2,6 +2,9 @@
 
 # fail fast and fail hard
 set -eo pipefail
+
+echo "-----> Running Alembic migration"
+
 set -x
 
 build_dir=$1
@@ -19,5 +22,5 @@ if [ -d "$env_dir" ]; then
   done
 fi
 
-echo "-----> Running Alembic migration"
+source /app/.profile.d/python.sh
 $PYTHON_EXE $build_dir/migrate.py db upgrade head
