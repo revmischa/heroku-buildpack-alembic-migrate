@@ -23,4 +23,4 @@ if [ -d "$env_dir" ]; then
 fi
 
 source /app/.profile.d/python.sh
-$PYTHON_EXE $build_dir/alembic upgrade head
+(cd $build_dir && alembic upgrade head)
