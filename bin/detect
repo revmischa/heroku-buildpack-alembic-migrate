@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # bin/detect <build-dir>
 
-if (test -f $1/migrate.py) then
+if (test -f $1/alembic.ini) then
   echo "Alembic"
   exit 0
 else
