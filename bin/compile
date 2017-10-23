@@ -11,8 +11,6 @@ build_dir=$1
 cache_dir=$2
 env_dir=$3
 
-PYTHON_EXE=$build_dir/.heroku/python/bin/python
-
 blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
 if [ -d "$env_dir" ]; then
   for e in $(ls $env_dir); do
@@ -22,5 +20,4 @@ if [ -d "$env_dir" ]; then
   done
 fi
 
-source /app/.profile.d/python.sh
-$PYTHON_EXE $build_dir/migrate.py db upgrade head
+(cd $build_dir && alembic upgrade head)

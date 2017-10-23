@@ -1,6 +1,6 @@
-This assumes there is an alembic script `migrate.py`.
+This assumes there is an alembic config `alembic.ini`.
 
-It runs `$PYTHON_EXE $BUILD_DIR/migrate.py db upgrade head`.
+It runs `alembic upgrade head` in `$BUILD_DIR`.
 
 
 Add to your build with:
